@@ -1,6 +1,7 @@
 package com.example.docksystem_mes.entity.WorkOrder;
 
-import com.example.docksystem_mes.entity.Process.Process;
+import com.example.docksystem_mes.entity.Material.Material;
+import com.example.docksystem_mes.entity.Process.MesProcess;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,5 +27,8 @@ public class WorkOrder {
     private WorkOrderType type;
     @OneToOne
     @JoinColumn(name = "process_no")
-    private Process process;
+    private MesProcess mesProcess;
+    @OneToOne
+    @JoinColumn(name = "material_no")
+    private Material material;
 }
