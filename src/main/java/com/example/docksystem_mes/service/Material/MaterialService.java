@@ -9,13 +9,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class MaterialService {
-    private MaterialRepository materialRepository;
-    private RestTemplate restTemplate;
+    private final MaterialRepository materialRepository;
+    private final RestTemplate restTemplate;
     @Value("${erp.base-url}")
     private String erpApiUrl;
 
@@ -24,6 +26,12 @@ public class MaterialService {
                            RestTemplate restTemplate){
         this.materialRepository = materialRepository;
         this.restTemplate = restTemplate;
+    }
+
+    public List<MaterialDto> getAllMaterial(){
+        return materialRepository.findAll().stream()
+                .map(MaterialDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     public void fetchMaterialFromErp(){
