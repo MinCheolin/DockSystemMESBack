@@ -9,13 +9,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class EquipmentService {
-    private EquipmentRepository equipmentRepository;
-    private RestTemplate restTemplate;
+    private final EquipmentRepository equipmentRepository;
+    private final RestTemplate restTemplate;
     @Value("${erp.base-url}")
     private String erpApiUrl;
 
@@ -24,6 +26,12 @@ public class EquipmentService {
                             RestTemplate restTemplate){
         this.equipmentRepository = equipmentRepository;
         this.restTemplate = restTemplate;
+    }
+
+    public List<EquipmentDto> getAllEquipment(){
+        return equipmentRepository.findAll().stream()
+                .map(EquipmentDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     public void fetchEquipmentFromErp(){

@@ -2,18 +2,20 @@ package com.example.docksystem_mes.DataLoader;
 
 import com.example.docksystem_mes.service.Equipment.EquipmentService;
 import com.example.docksystem_mes.service.Material.MaterialService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class InitialDataLoader implements CommandLineRunner {
-    @Autowired
-    private EquipmentService equipmentService;
-    @Autowired
-    private MaterialService materialService;
+
+    private final EquipmentService equipmentService;
+    private final MaterialService materialService;
+
+    public InitialDataLoader(EquipmentService equipmentService,
+                             MaterialService materialService){
+        this.equipmentService = equipmentService;
+        this.materialService = materialService;
+    }
 
     @Override
     public void run(String... args) throws  Exception{

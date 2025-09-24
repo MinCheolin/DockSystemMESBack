@@ -8,11 +8,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/mes/v1/equipments")
 @RequiredArgsConstructor
 public class EquipmentController {
     private final EquipmentService equipmentService;
+
+    @GetMapping
+    public ResponseEntity<List<EquipmentDto>> getAllEquipment(){
+        List<EquipmentDto> equipments = equipmentService.getAllEquipment();
+        return ResponseEntity.ok(equipments);
+    }
 
     @PostMapping
     public ResponseEntity<Equipment> createEquipment(@RequestBody EquipmentDto dto){

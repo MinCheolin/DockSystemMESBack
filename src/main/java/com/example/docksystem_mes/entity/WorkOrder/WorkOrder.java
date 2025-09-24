@@ -1,7 +1,8 @@
 package com.example.docksystem_mes.entity.WorkOrder;
 
+import com.example.docksystem_mes.entity.Equipment.Equipment;
+import com.example.docksystem_mes.entity.EquipmentUse.EquipmentUse;
 import com.example.docksystem_mes.entity.Material.Material;
-import com.example.docksystem_mes.entity.Process.MesProcess;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +16,8 @@ public class WorkOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long woNo;
     @Column(nullable = false)
+    private String woName;
+    @Column(nullable = false)
     private Date woStartDate;
     @Column(nullable = false)
     private Date woEndDate;
@@ -25,9 +28,14 @@ public class WorkOrder {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private WorkOrderType type;
+    @Column(nullable = false)
+    private String ppNo;
     @OneToOne
-    @JoinColumn(name = "process_no")
-    private MesProcess mesProcess;
+    @JoinColumn(name = "equip_no")
+    private Equipment equipment;
+    @OneToOne
+    @JoinColumn(name = "equip_use_no")
+    private EquipmentUse equipmentUse;
     @OneToOne
     @JoinColumn(name = "material_no")
     private Material material;
