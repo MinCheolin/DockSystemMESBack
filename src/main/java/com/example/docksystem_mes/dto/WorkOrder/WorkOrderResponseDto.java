@@ -1,8 +1,7 @@
 package com.example.docksystem_mes.dto.WorkOrder;
 
-import com.example.docksystem_mes.dto.Equipment.EquipmentDto;
-import com.example.docksystem_mes.dto.Material.MaterialDto;
-import com.example.docksystem_mes.entity.Equipment.Equipment;
+import com.example.docksystem_mes.dto.Equipment.EquipmentResponseDto;
+import com.example.docksystem_mes.dto.Material.MaterialResponseDto;
 import com.example.docksystem_mes.entity.WorkOrder.WorkOrder;
 import com.example.docksystem_mes.entity.WorkOrder.WorkOrderType;
 import lombok.Data;
@@ -20,8 +19,8 @@ public class WorkOrderResponseDto {
     private WorkOrderType type;
     private String typeLabel;
     private String ppNo;
-    private EquipmentDto equipment;
-    private MaterialDto material;
+    private EquipmentResponseDto equipment;
+    private MaterialResponseDto material;
 
     public static WorkOrderResponseDto fromEntity(WorkOrder workOrder){
         WorkOrderResponseDto dto = new WorkOrderResponseDto();
@@ -34,8 +33,8 @@ public class WorkOrderResponseDto {
         dto.setType(workOrder.getType());
         dto.setTypeLabel(workOrder.getType().getLabel());
         dto.setPpNo(workOrder.getPpNo());
-        dto.setEquipment(EquipmentDto.fromEntity(workOrder.getEquipment()));
-        dto.setMaterial(MaterialDto.fromEntity(workOrder.getMaterial()));
+        dto.setEquipment(EquipmentResponseDto.fromEntity(workOrder.getEquipment()));
+        dto.setMaterial(MaterialResponseDto.fromEntity(workOrder.getMaterial()));
         return dto;
     }
 

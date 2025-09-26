@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class MaterialDto {
+public class FromErpMaterialDto {
+
     @JsonProperty("materialNo")
     private String erpMaterialNo;
     @JsonProperty("materialCode")
@@ -13,8 +14,8 @@ public class MaterialDto {
     @JsonProperty("materialName")
     private String materialName;
 
-    public static MaterialDto fromEntity(Material material){
-        MaterialDto dto = new MaterialDto();
+    public static FromErpMaterialDto fromEntity(Material material){
+        FromErpMaterialDto dto = new FromErpMaterialDto();
         dto.setErpMaterialNo(material.getErpMaterialNo());
         dto.setMaterialCode(material.getMaterialCode());
         dto.setMaterialName(material.getMaterialName());

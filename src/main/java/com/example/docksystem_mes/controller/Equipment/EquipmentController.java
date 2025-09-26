@@ -1,6 +1,7 @@
 package com.example.docksystem_mes.controller.Equipment;
 
-import com.example.docksystem_mes.dto.Equipment.EquipmentDto;
+import com.example.docksystem_mes.dto.Equipment.EquipmentResponseDto;
+import com.example.docksystem_mes.dto.Equipment.FromErpEquipmentDto;
 import com.example.docksystem_mes.entity.Equipment.Equipment;
 import com.example.docksystem_mes.service.Equipment.EquipmentService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,13 @@ public class EquipmentController {
     private final EquipmentService equipmentService;
 
     @GetMapping
-    public ResponseEntity<List<EquipmentDto>> getAllEquipment(){
-        List<EquipmentDto> equipments = equipmentService.getAllEquipment();
+    public ResponseEntity<List<FromErpEquipmentDto>> getAllEquipment(){
+        List<FromErpEquipmentDto> equipments = equipmentService.getAllEquipment();
         return ResponseEntity.ok(equipments);
     }
 
     @PostMapping
-    public ResponseEntity<Equipment> createEquipment(@RequestBody EquipmentDto dto){
+    public ResponseEntity<Equipment> createEquipment(@RequestBody FromErpEquipmentDto dto){
         Equipment equipment = equipmentService.saveOrUpdate(dto);
         return new ResponseEntity<>(equipment, HttpStatus.CREATED);
     }

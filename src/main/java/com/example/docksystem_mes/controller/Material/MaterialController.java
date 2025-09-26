@@ -1,6 +1,7 @@
 package com.example.docksystem_mes.controller.Material;
 
-import com.example.docksystem_mes.dto.Material.MaterialDto;
+import com.example.docksystem_mes.dto.Material.FromErpMaterialDto;
+import com.example.docksystem_mes.dto.Material.MaterialResponseDto;
 import com.example.docksystem_mes.entity.Material.Material;
 import com.example.docksystem_mes.service.Material.MaterialService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,13 @@ public class MaterialController {
     private final MaterialService materialService;
 
     @GetMapping
-    public ResponseEntity<List<MaterialDto>> getAllMaterial(){
-        List<MaterialDto> materials = materialService.getAllMaterial();
+    public ResponseEntity<List<FromErpMaterialDto>> getAllMaterial(){
+        List<FromErpMaterialDto> materials = materialService.getAllMaterial();
         return ResponseEntity.ok(materials);
     }
 
     @PostMapping
-    public ResponseEntity<Material> createMaterial(@RequestBody MaterialDto dto){
+    public ResponseEntity<Material> createMaterial(@RequestBody FromErpMaterialDto dto){
         Material material = materialService.saveOrUpdate(dto);
         return new ResponseEntity<>(material, HttpStatus.CREATED);
     }

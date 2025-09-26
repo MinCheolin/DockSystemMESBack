@@ -13,5 +13,7 @@ public class Equipment {
     private String erpEquipNo;
     private String equipCode;
     private String equipName;
+    @Enumerated(EnumType.STRING)
+    private EquipmentType type;
 
 }

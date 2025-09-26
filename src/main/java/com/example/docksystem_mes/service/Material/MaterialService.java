@@ -1,6 +1,7 @@
 package com.example.docksystem_mes.service.Material;
 
-import com.example.docksystem_mes.dto.Material.MaterialDto;
+import com.example.docksystem_mes.dto.Material.FromErpMaterialDto;
+import com.example.docksystem_mes.dto.Material.MaterialResponseDto;
 import com.example.docksystem_mes.entity.Material.Material;
 import com.example.docksystem_mes.repository.Material.MaterialRepository;
 import jakarta.transaction.Transactional;
@@ -28,17 +29,17 @@ public class MaterialService {
         this.restTemplate = restTemplate;
     }
 
-    public List<MaterialDto> getAllMaterial(){
+    public List<FromErpMaterialDto> getAllMaterial(){
         return materialRepository.findAll().stream()
-                .map(MaterialDto::fromEntity)
+                .map(FromErpMaterialDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
     public void fetchMaterialFromErp(){
         try{
-            MaterialDto[] dtos = restTemplate.getForObject(erpApiUrl+"/materials",MaterialDto[].class);
+            FromErpMaterialDto[] dtos = restTemplate.getForObject(erpApiUrl+"/materials", FromErpMaterialDto[].class);
             if(dtos != null){
-                for(MaterialDto dto:dtos){
+                for(FromErpMaterialDto dto:dtos){
                     saveOrUpdate(dto);
                 }
             }
@@ -47,7 +48,7 @@ public class MaterialService {
         }
     }
 
-    public Material saveOrUpdate(MaterialDto dto){
+    public Material saveOrUpdate(FromErpMaterialDto dto){
         Optional<Material> existingMaterial = materialRepository.findByErpMaterialNo(dto.getErpMaterialNo());
         Material material;
 

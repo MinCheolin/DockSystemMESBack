@@ -1,7 +1,6 @@
 package com.example.docksystem_mes.entity.WorkOrder;
 
 import com.example.docksystem_mes.entity.Equipment.Equipment;
-import com.example.docksystem_mes.entity.EquipmentUse.EquipmentUse;
 import com.example.docksystem_mes.entity.Material.Material;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -33,10 +32,7 @@ public class WorkOrder {
     @OneToOne
     @JoinColumn(name = "equip_no")
     private Equipment equipment;
-    @OneToOne
-    @JoinColumn(name = "equip_use_no")
-    private EquipmentUse equipmentUse;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "material_no")
     private Material material;
 }

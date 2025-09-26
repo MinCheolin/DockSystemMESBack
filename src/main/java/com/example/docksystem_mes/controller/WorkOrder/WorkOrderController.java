@@ -23,6 +23,12 @@ public class WorkOrderController {
         return ResponseEntity.ok(WorkOrders);
     }
 
+    @GetMapping("/{woNo}")
+    public ResponseEntity<WorkOrderResponseDto> getWorkOrder(@PathVariable("woNo")Long woNo){
+        WorkOrder workOrder = workOrderService.getWorkOrderByNo(woNo);
+        return ResponseEntity.ok(WorkOrderResponseDto.fromEntity(workOrder));
+    }
+
     @PostMapping
     public WorkOrder createWorkOrder(@RequestBody WorkOrderCreateRequestDto requestDto){
         return workOrderService.createWorkOrder(requestDto);

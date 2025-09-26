@@ -1,7 +1,9 @@
 package com.example.docksystem_mes.service.Equipment;
 
-import com.example.docksystem_mes.dto.Equipment.EquipmentDto;
+import com.example.docksystem_mes.dto.Equipment.FromErpEquipmentDto;
+import com.example.docksystem_mes.dto.Equipment.EquipmentResponseDto;
 import com.example.docksystem_mes.entity.Equipment.Equipment;
+import com.example.docksystem_mes.entity.Equipment.EquipmentType;
 import com.example.docksystem_mes.repository.Equipment.EquipmentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +30,17 @@ public class EquipmentService {
         this.restTemplate = restTemplate;
     }
 
-    public List<EquipmentDto> getAllEquipment(){
-        return equipmentRepository.findAll().stream()
-                .map(EquipmentDto::fromEntity)
+    public List<FromErpEquipmentDto> getAllEquipment(){
+        return equipmentRepository.findByType(EquipmentType.NotOperating).stream()
+                .map(FromErpEquipmentDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
     public void fetchEquipmentFromErp(){
         try {
-            EquipmentDto[] dtos = restTemplate.getForObject(erpApiUrl+"/equipments",EquipmentDto[].class);
+            FromErpEquipmentDto[] dtos = restTemplate.getForObject(erpApiUrl+"/equipments", FromErpEquipmentDto[].class);
             if(dtos != null){
-                for(EquipmentDto dto:dtos ){
+                for(FromErpEquipmentDto dto:dtos ){
                     saveOrUpdate(dto);
                 }
             }
@@ -47,7 +49,7 @@ public class EquipmentService {
         }
     }
 
-    public Equipment saveOrUpdate(EquipmentDto dto){
+    public Equipment saveOrUpdate(FromErpEquipmentDto dto){
         Optional<Equipment> existingEquipment = equipmentRepository.findByErpEquipNo(dto.getErpEquipNo());
         Equipment equipment;
 
@@ -55,11 +57,13 @@ public class EquipmentService {
             equipment = existingEquipment.get();
             equipment.setEquipCode(dto.getEquipCode());
             equipment.setEquipName(dto.getEquipName());
+            equipment.setType(dto.getType());
         }else{
             equipment = new Equipment();
             equipment.setErpEquipNo(dto.getErpEquipNo());
             equipment.setEquipCode(dto.getEquipCode());
             equipment.setEquipName(dto.getEquipName());
+            equipment.setType(dto.getType());
         }
         return equipmentRepository.save(equipment);
     }
