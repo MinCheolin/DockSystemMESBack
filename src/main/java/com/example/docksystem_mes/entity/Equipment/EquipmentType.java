@@ -3,8 +3,7 @@ package com.example.docksystem_mes.entity.Equipment;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum EquipmentType {
-    Operating("가동"),
-    NotOperating("비가동"),
+    USABLE("사용가능"),
     Repair("수리"),
     Disposed("폐기");
 

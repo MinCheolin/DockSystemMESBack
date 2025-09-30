@@ -43,6 +43,16 @@ public class WorkOrderService {
     }
 
     public WorkOrder createWorkOrder(WorkOrderCreateRequestDto requestDto){
+
+        Equipment equipment = equipmentRepository.findById(requestDto.getEquipNo())
+                .orElseThrow(()->new EntityNotFoundException("해당 no의 장비를 찾을 수 없습니다."));
+
+        boolean inUse = workOrderRepository.existsByEquipmentAndWoStartDateLessThanEqualAndWoEndDateGreaterThanEqual(equipment,requestDto.getWoStartDate(),requestDto.getWoEndDate());
+
+        if(inUse){
+            throw new IllegalStateException("해당 장비는 이미 선택한 기간에 사용중입니다.");
+        }
+
         WorkOrder workOrder = new WorkOrder();
         workOrder.setWoName(requestDto.getWoName());
         workOrder.setWoStartDate(requestDto.getWoStartDate());
@@ -51,19 +61,7 @@ public class WorkOrderService {
         workOrder.setWoDescription(requestDto.getWoDescription());
         workOrder.setType(requestDto.getType());
         workOrder.setPpNo(requestDto.getPpNo());
-        Equipment equipment = equipmentRepository.findById(requestDto.getEquipNo())
-                .orElseThrow(()->new EntityNotFoundException("해당 no의 장비를 찾을 수 없습니다."));
         workOrder.setEquipment(equipment);
-        Material material = materialRepository.findById(requestDto.getMaterialNo())
-                .orElseThrow(()->new EntityNotFoundException("해당 no의 자재를 찾을 수 없습니다."));
-        workOrder.setMaterial(material);
-        
-        //mes로 전송
-        ToErpEquipmentDto dto = new ToErpEquipmentDto();
-        String erpEquipNo = equipment.getErpEquipNo();
-        dto.setErpEquipNo(erpEquipNo);
-        dto.setType(equipment.getType());
-        sendEquipmentERP(dto);
 
        return workOrderRepository.save(workOrder) ;
     }
@@ -90,8 +88,6 @@ public class WorkOrderService {
                 .orElseThrow(()->new EntityNotFoundException("해당 no의 작업지시를 찾을 수 없습니다."));
         Equipment existingEquipment = equipmentRepository.findById(requestDto.getEquipNo())
                 .orElseThrow(()->new EntityNotFoundException("해당 no의 장비를 찾을 수 없습니다."));
-        Material existingMaterial = materialRepository.findById(requestDto.getMaterialNo())
-                .orElseThrow(()->new EntityNotFoundException("해당 no의 자재를 찾을 수 없습니다."));
         existingWorkOrder.setWoStartDate(requestDto.getWoStartDate());
         existingWorkOrder.setWoEndDate(requestDto.getWoEndDate());
         existingWorkOrder.setWoDetail(requestDto.getWoDetail());
@@ -99,16 +95,6 @@ public class WorkOrderService {
         existingWorkOrder.setType(requestDto.getType());
         existingWorkOrder.setPpNo(requestDto.getPpNo());
         existingWorkOrder.setEquipment(existingEquipment);
-        existingWorkOrder.setMaterial(existingMaterial);
-
-        //Mes로 전송
-        if(existingWorkOrder.getType().equals(WorkOrderType.COMPLETE)) {
-            ToErpEquipmentDto dto = new ToErpEquipmentDto();
-            String erpEquipNo = existingEquipment.getErpEquipNo();
-            dto.setErpEquipNo(erpEquipNo);
-            dto.setType(existingEquipment.getType());
-            sendEquipmentERP(dto);
-        }
 
         return workOrderRepository.save(existingWorkOrder);
     }

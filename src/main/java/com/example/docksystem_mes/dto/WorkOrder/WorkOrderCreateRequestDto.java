@@ -32,6 +32,5 @@ public class WorkOrderCreateRequestDto {
     private String ppNo;
     @NotNull(message = "장비는 필수입니다.")
     private Long equipNo;
-    @NotNull(message = "자재는 필수입니다.")
-    private Long materialNo;
+
 }

@@ -5,11 +5,14 @@ import com.example.docksystem_mes.dto.WorkOrder.WorkOrderResponseDto;
 import com.example.docksystem_mes.dto.WorkOrder.WorkOrderUpdateRequestDto;
 import com.example.docksystem_mes.entity.WorkOrder.WorkOrder;
 import com.example.docksystem_mes.service.WorkOrder.WorkOrderService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,8 +33,15 @@ public class WorkOrderController {
     }
 
     @PostMapping
-    public WorkOrder createWorkOrder(@RequestBody WorkOrderCreateRequestDto requestDto){
-        return workOrderService.createWorkOrder(requestDto);
+    public ResponseEntity<?> createWorkOrder(@RequestBody WorkOrderCreateRequestDto requestDto){
+        try{
+            WorkOrder workOrder = workOrderService.createWorkOrder(requestDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(workOrder);
+        }catch (IllegalStateException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message",e.getMessage()));
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message",e.getMessage()));
+        }
     }
 
     @PutMapping("/{id}")

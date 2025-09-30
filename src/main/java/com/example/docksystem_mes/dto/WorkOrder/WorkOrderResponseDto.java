@@ -20,7 +20,6 @@ public class WorkOrderResponseDto {
     private String typeLabel;
     private String ppNo;
     private EquipmentResponseDto equipment;
-    private MaterialResponseDto material;
 
     public static WorkOrderResponseDto fromEntity(WorkOrder workOrder){
         WorkOrderResponseDto dto = new WorkOrderResponseDto();
@@ -34,7 +33,6 @@ public class WorkOrderResponseDto {
         dto.setTypeLabel(workOrder.getType().getLabel());
         dto.setPpNo(workOrder.getPpNo());
         dto.setEquipment(EquipmentResponseDto.fromEntity(workOrder.getEquipment()));
-        dto.setMaterial(MaterialResponseDto.fromEntity(workOrder.getMaterial()));
         return dto;
     }
 

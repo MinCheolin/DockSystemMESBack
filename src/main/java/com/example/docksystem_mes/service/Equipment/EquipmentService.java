@@ -31,7 +31,7 @@ public class EquipmentService {
     }
 
     public List<FromErpEquipmentDto> getAllEquipment(){
-        return equipmentRepository.findByType(EquipmentType.NotOperating).stream()
+        return equipmentRepository.findAll().stream()
                 .map(FromErpEquipmentDto::fromEntity)
                 .collect(Collectors.toList());
     }

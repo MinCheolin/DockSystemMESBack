@@ -16,5 +16,4 @@ public class WorkOrderUpdateRequestDto {
     private WorkOrderType type;
     private String ppNo;
     private Long equipNo;
-    private Long materialNo;
 }
