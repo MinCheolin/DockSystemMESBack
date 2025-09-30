@@ -88,6 +88,16 @@ public class WorkOrderService {
                 .orElseThrow(()->new EntityNotFoundException("해당 no의 작업지시를 찾을 수 없습니다."));
         Equipment existingEquipment = equipmentRepository.findById(requestDto.getEquipNo())
                 .orElseThrow(()->new EntityNotFoundException("해당 no의 장비를 찾을 수 없습니다."));
+
+        boolean inUse = workOrderRepository.existsByEquipmentAndWoStartDateLessThanEqualAndWoEndDateGreaterThanEqual
+                (existingEquipment,existingWorkOrder.getWoStartDate(),existingWorkOrder.getWoEndDate());
+
+        if(inUse && ! (existingWorkOrder.getEquipment().equals(existingEquipment)
+                        && existingWorkOrder.getWoStartDate().equals(requestDto.getWoStartDate())
+                        && existingWorkOrder.getWoEndDate().equals(requestDto.getWoEndDate()))){
+            throw new IllegalStateException("해당 당비는 이미 선택한 기간에 사용중입니다.");
+        }
+
         existingWorkOrder.setWoStartDate(requestDto.getWoStartDate());
         existingWorkOrder.setWoEndDate(requestDto.getWoEndDate());
         existingWorkOrder.setWoDetail(requestDto.getWoDetail());

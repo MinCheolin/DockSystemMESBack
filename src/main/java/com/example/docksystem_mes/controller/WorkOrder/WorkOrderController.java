@@ -45,15 +45,27 @@ public class WorkOrderController {
     }
 
     @PutMapping("/{id}")
-    public WorkOrderResponseDto updateWorkOrder(@PathVariable("id")Long woNo,
+    public ResponseEntity<?> updateWorkOrder(@PathVariable("id")Long woNo,
                                                 @RequestBody WorkOrderUpdateRequestDto requestDto){
-        WorkOrder updateworkOrder = workOrderService.updateWorkOrder(woNo,requestDto);
-        return WorkOrderResponseDto.fromEntity(updateworkOrder);
+        try{
+            workOrderService.updateWorkOrder(woNo,requestDto);
+            return ResponseEntity.ok(Map.of("message","작업 지시가 수정되었습니다."));
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message",e.getMessage()));
+        }
+        catch (IllegalStateException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message",e.getMessage()));
+        }
     }
 
     @DeleteMapping("/{woNo}")
-    public ResponseEntity<Void> deleteWorkOrder(@PathVariable("woNo")Long woNo){
-        workOrderService.deleteWorkOrder(woNo);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteWorkOrder(@PathVariable("woNo")Long woNo){
+        try{
+            workOrderService.deleteWorkOrder(woNo);
+            return ResponseEntity.noContent().build();
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message",e.getMessage()));
+        }
+
     }
 }
