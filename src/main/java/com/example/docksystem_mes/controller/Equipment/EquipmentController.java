@@ -1,6 +1,5 @@
 package com.example.docksystem_mes.controller.Equipment;
 
-import com.example.docksystem_mes.dto.Equipment.EquipmentResponseDto;
 import com.example.docksystem_mes.dto.Equipment.FromErpEquipmentDto;
 import com.example.docksystem_mes.entity.Equipment.Equipment;
 import com.example.docksystem_mes.service.Equipment.EquipmentService;

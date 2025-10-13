@@ -5,11 +5,14 @@ import com.example.docksystem_mes.dto.QualityControl.QualityControlResponseDto;
 import com.example.docksystem_mes.dto.QualityControl.QualityControlUpdateRequestDto;
 import com.example.docksystem_mes.dto.WorkOrder.WorkOrderResponseDto;
 import com.example.docksystem_mes.entity.QualityControl.QualityControl;
+import com.example.docksystem_mes.entity.Stock.Stock;
 import com.example.docksystem_mes.entity.WorkOrder.WorkOrder;
 import com.example.docksystem_mes.repository.QualityControl.QualityControlRepository;
+import com.example.docksystem_mes.repository.Stock.StockRepository;
 import com.example.docksystem_mes.repository.WorkOrder.WorkOrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +21,19 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class QualityControlService {
     private final QualityControlRepository qualityControlRepository;
     private final WorkOrderRepository workOrderRepository;
+    private final StockRepository stockRepository;
 
-    @Autowired
-    public QualityControlService(QualityControlRepository qualityControlRepository,
-                                 WorkOrderRepository workOrderRepository){
-        this.qualityControlRepository = qualityControlRepository;
-        this.workOrderRepository = workOrderRepository;
-    }
 
     public QualityControl createQualityControl(QualityControlCreateRequestDto requestDto){
-        QualityControl qualityControl = new QualityControl();
-        qualityControl.setType(requestDto.getType());
-        WorkOrder workOrder = workOrderRepository.findById(requestDto.getWoNo())
-                .orElseThrow(()->new EntityNotFoundException("해당 No의 작업 지시를 찾을 수 없습니다."));
-        qualityControl.setWorkOrder(workOrder);
-        return qualityControlRepository.save(qualityControl);
+        Stock findStock = stockRepository.findById(requestDto.getStockNo())
+                .orElseThrow(()->new EntityNotFoundException("재고를 찾을 수 없습니다."));
+        WorkOrder findWo = workOrderRepository.findById(requestDto.getWoNo())
+                .orElseThrow(()->new EntityNotFoundException("작업지시를 찾을 수 없습니다."));
+        return qualityControlRepository.save(requestDto.toEntity(findWo,findStock));
     }
 
     public List<QualityControlResponseDto> getAllQualityControl(){
@@ -50,13 +48,10 @@ public class QualityControlService {
         qualityControlRepository.delete(existingQualityControl);
     }
 
-    public QualityControl updateQualityControl(Long qcNo, QualityControlUpdateRequestDto requestDto){
+    public void updateQualityControl(Long qcNo, QualityControlUpdateRequestDto requestDto){
         QualityControl existingQualityControl = qualityControlRepository.findById(qcNo)
                 .orElseThrow(()->new EntityNotFoundException("해당 No의 품질 관리를 찾을 수 없습니다."));
-        WorkOrder existingWorkOrder = workOrderRepository.findById(requestDto.getWoNo())
-                .orElseThrow(()->new EntityNotFoundException("해당 No의 작업 지시를 찾을 수 없습니다."));
-        existingQualityControl.setType(requestDto.getType());
-        existingQualityControl.setWorkOrder(existingWorkOrder);
-        return existingQualityControl;
+        existingQualityControl.InspectionCompleted(requestDto);
+        qualityControlRepository.save(existingQualityControl);
     }
 }

@@ -16,4 +16,10 @@ public class Stock {
     private int normalCount;
     @Column(nullable = false,columnDefinition = "int default 0")
     private int errorCount;
+
+
+    public void CountUpdate(int normal, int error){
+        this.normalCount += normal;
+        this.errorCount += error;
+    }
 }

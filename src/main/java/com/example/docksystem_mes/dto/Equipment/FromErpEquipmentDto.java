@@ -1,9 +1,9 @@
 package com.example.docksystem_mes.dto.Equipment;
 
 import com.example.docksystem_mes.entity.Equipment.Equipment;
-import com.example.docksystem_mes.entity.Equipment.EquipmentType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.EnumType;
+import com.example.docksystem_mes.entity.Equipment.EquipmentType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 

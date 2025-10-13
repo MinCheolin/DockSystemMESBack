@@ -3,6 +3,7 @@ package com.example.docksystem_mes.service.WorkOrder;
 import com.example.docksystem_mes.dto.Equipment.ToErpEquipmentDto;
 import com.example.docksystem_mes.dto.WorkOrder.WorkOrderCreateRequestDto;
 import com.example.docksystem_mes.dto.WorkOrder.WorkOrderResponseDto;
+import com.example.docksystem_mes.dto.WorkOrder.WorkOrderTypeUpdateDto;
 import com.example.docksystem_mes.dto.WorkOrder.WorkOrderUpdateRequestDto;
 import com.example.docksystem_mes.entity.Equipment.Equipment;
 import com.example.docksystem_mes.entity.Material.Material;
@@ -116,5 +117,10 @@ public class WorkOrderService {
         }catch (Exception e){
             throw new RuntimeException("전송 실패");
         }
+    }
+
+    public void updateWorkOrderType(Long woNo, WorkOrderTypeUpdateDto dto){
+        WorkOrder workOrder = workOrderRepository.findById(woNo).orElseThrow(() -> new EntityNotFoundException("WorkOrder not found "));
+        workOrder.setType(dto.getType());
     }
 }
