@@ -29,10 +29,10 @@ public class QualityControlController {
     }
 
     @PutMapping("/{id}")
-    public QualityControlResponseDto updateQualityControl(@PathVariable("id")Long qcNo,
+    public ResponseEntity<Void> updateQualityControl(@PathVariable("id")Long qcNo,
                                                           @RequestBody QualityControlUpdateRequestDto requestDto){
-        QualityControl updateQualityControl = qualityControlService.updateQualityControl(qcNo,requestDto);
-        return QualityControlResponseDto.fromEntity(updateQualityControl);
+        qualityControlService.updateQualityControl(qcNo,requestDto);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{qcNo}")

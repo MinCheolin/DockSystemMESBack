@@ -1,10 +1,9 @@
 package com.example.docksystem_mes.service.Equipment;
 
 import com.example.docksystem_mes.dto.Equipment.FromErpEquipmentDto;
-import com.example.docksystem_mes.dto.Equipment.EquipmentResponseDto;
 import com.example.docksystem_mes.entity.Equipment.Equipment;
-import com.example.docksystem_mes.entity.Equipment.EquipmentType;
 import com.example.docksystem_mes.repository.Equipment.EquipmentRepository;
+import com.example.docksystem_mes.entity.Equipment.EquipmentType;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

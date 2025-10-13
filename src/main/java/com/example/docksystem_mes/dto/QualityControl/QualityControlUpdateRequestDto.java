@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 public class QualityControlUpdateRequestDto {
     private QualityControlType type;
-    private Long woNo;
+    private int successQuantity;
+    private int faultQuantity;
 }

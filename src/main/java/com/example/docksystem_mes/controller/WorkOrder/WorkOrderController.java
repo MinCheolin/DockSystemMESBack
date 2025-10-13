@@ -2,6 +2,7 @@ package com.example.docksystem_mes.controller.WorkOrder;
 
 import com.example.docksystem_mes.dto.WorkOrder.WorkOrderCreateRequestDto;
 import com.example.docksystem_mes.dto.WorkOrder.WorkOrderResponseDto;
+import com.example.docksystem_mes.dto.WorkOrder.WorkOrderTypeUpdateDto;
 import com.example.docksystem_mes.dto.WorkOrder.WorkOrderUpdateRequestDto;
 import com.example.docksystem_mes.entity.WorkOrder.WorkOrder;
 import com.example.docksystem_mes.service.WorkOrder.WorkOrderService;
@@ -55,5 +56,11 @@ public class WorkOrderController {
     public ResponseEntity<Void> deleteWorkOrder(@PathVariable("woNo")Long woNo){
         workOrderService.deleteWorkOrder(woNo);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{woNo}/type")
+   public ResponseEntity<Void> updateType(@PathVariable Long woNo, @RequestBody WorkOrderTypeUpdateDto dto){
+        workOrderService.updateWorkOrderType(woNo,dto);
+        return ResponseEntity.ok().build();
     }
 }

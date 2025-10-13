@@ -3,8 +3,8 @@ package com.example.docksystem_mes.entity.QualityControl;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum QualityControlType {
-    ERROR("불량"),
-    NORMAL("정상");
+    WAITING("대기"),
+    COMPLETE("완료");
 
     private final String label;
 
