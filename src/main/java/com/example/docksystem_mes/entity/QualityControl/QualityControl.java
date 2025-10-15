@@ -30,7 +30,7 @@ public class QualityControl {
     public void InspectionCompleted(QualityControlUpdateRequestDto dto){
         this.successQuantity = dto.getSuccessQuantity();
         this.faultQuantity = dto.getFaultQuantity();
-        this.type = QualityControlType.COMPLETE;
+        this.type = dto.getType();
     }
 
 
