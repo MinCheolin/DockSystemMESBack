@@ -1,6 +1,6 @@
 package com.example.docksystem_mes.entity.WorkOrder;
 
-import com.example.docksystem_mes.entity.Process.Process;
+import com.example.docksystem_mes.entity.Equipment.Equipment;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,6 +14,8 @@ public class WorkOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long woNo;
     @Column(nullable = false)
+    private String woName;
+    @Column(nullable = false)
     private Date woStartDate;
     @Column(nullable = false)
     private Date woEndDate;
@@ -24,7 +26,9 @@ public class WorkOrder {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private WorkOrderType type;
-    @OneToOne
-    @JoinColumn(name = "process_no")
-    private Process process;
+    @Column(nullable = false)
+    private String ppNo;
+    @ManyToOne
+    @JoinColumn(name = "equip_no")
+    private Equipment equipment;
 }
